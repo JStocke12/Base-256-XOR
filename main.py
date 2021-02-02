@@ -40,13 +40,15 @@ class crypto:
       self.content = bytearray(i^key for i in self.content)
     return self
 
+strlen = int(input("String Length: "))
+
 text = base64.b64decode(open("input.txt", "r").read())
 
 data = {i:crypto(text) for i in range(128)}
 
 data = {k:v.xor_int(k).mode_convert() for k,v in data.items()}
 
-print('\n'.join([str(i)+": "+elem.content[:int(input("String Length: "))] for i,elem in data.items()]))
+print('\n'.join([str(i)+": "+elem.content[:strlen] for i,elem in data.items()]))
 
 while True:
     print(repr(data[int(input("Select value for more data: "))]))
