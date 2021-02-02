@@ -31,4 +31,11 @@ class crypto:
     else:
       self.content = bytearray(i^key for i in self.content)
 
-data = crypto(base64.b64decode(open("input.txt", "r").read()))
+data = [crypto(base64.b64decode(open("input.txt", "r").read())).xor_int(i) for i in range(256)]
+
+[elem.mode_convert() for elem in data]
+
+print('\n'.join([str(i)+": "+repr(elem)[:10] for elem,i in zip(data, range(len(data)))]))
+
+while True:
+    print(repr(data[int(input("Select value for more data: "))]))
