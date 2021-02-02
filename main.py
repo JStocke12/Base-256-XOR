@@ -46,7 +46,7 @@ data = {i:crypto(text) for i in range(128)}
 
 data = {k:v.xor_int(k).mode_convert() for k,v in data.items()}
 
-print('\n'.join([str(i)+": "+elem.content[:10] for i,elem in data.items()]))
+print('\n'.join([str(i)+": "+elem.content[:int(input("String Length: "))] for i,elem in data.items()]))
 
 while True:
     print(repr(data[int(input("Select value for more data: "))]))
