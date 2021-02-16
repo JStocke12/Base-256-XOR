@@ -1,4 +1,12 @@
 import base64
+import string
+
+char_weights = {**{' ':1, 'e':2, 't':3, 'a':4, 'i':4,
+'n':4, 'o':4, 's':4, 'h':5, 'r':6,
+'d': 7, 'l':8, 'u':9, 'c':10, 'm':10,
+'f':11, 'w':12, 'y':12, 'g':13, 'p':13,
+'b':14, 'v':15, 'k':16, 'q':17, 'j':18,
+'x': 18, 'z': 19}, **{i:20 for i in string.digits}, **{i:30 for i in string.punctuation if i != ' '}}
 
 class crypto:
   def __init__(self, s):
@@ -40,13 +48,15 @@ class crypto:
       self.content = bytearray(i^key for i in self.content)
     return self
 
-strlen = int(input("String Length: "))
+strlen = int(input("Text Display Length: "))
 
 text = base64.b64decode(open("input.txt", "r").read())
 
 data = {i:crypto(text) for i in range(128)}
 
 data = {k:v.xor_int(k).mode_convert() for k,v in data.items()}
+
+data = {k:v for k, v in sorted(data.items(), key = lambda elem: sum(map(lambda char: char_weights.get(char, 1000), elem[1].content)))}
 
 print('\n'.join([str(i)+": "+elem.content[:strlen] for i,elem in data.items()]))
 
