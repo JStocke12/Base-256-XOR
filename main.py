@@ -1,5 +1,6 @@
 import base64
 import string
+import random
 
 char_weights = {**{' ':1, 'e':2, 't':3, 'a':4, 'i':4,
 'n':4, 'o':4, 's':4, 'h':5, 'r':6,
@@ -46,9 +47,18 @@ class crypto:
       self.mode_convert()
     else:
       self.content = bytearray(i^key for i in self.content)
-    return self
+    return
 
-strlen = int(input("Text Display Length: "))
+  def xor_rand(self, seed):
+    random.seed(seed)
+    if type(self.content) == str:
+      self.mode_convert()
+      self.xor_rand(seed)
+      self.mode_convert()
+    else:
+      self.content = bytearray(i^random.randrange(256) for i in self.content)
+
+'''strlen = int(input("Text Display Length: "))
 
 text = base64.b64decode(open("input.txt", "r").read())
 
@@ -61,4 +71,12 @@ data = {k:v for k, v in sorted(data.items(), key = lambda elem: sum(map(lambda c
 print('\n'.join([str(i)+": "+elem.content[:strlen] for i,elem in data.items()]))
 
 while True:
-    print(repr(data[int(input("Select value for more data: "))]))
+    print(repr(data[int(input("Select value for more data: "))]))'''
+
+test = crypto("Hello World!")
+test.mode_convert()
+test.xor_rand(5)
+test2 = test
+print(test2)
+test.xor_rand(5)
+print(test.mode_convert())
